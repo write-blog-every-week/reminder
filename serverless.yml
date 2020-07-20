@@ -5,7 +5,10 @@ service:
 #org: your-org-name
 
 custom:
-  stage: ${opt:stage,develop}
+  awsAccount: ${opt:awsAccount}
+  tableName: ${opt:tableName, write_blog_every_week}
+  slackApiUrl: ${opt:slackApiUrl}
+  slackChannelName: ${opt:slackChannelName, general}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -23,18 +26,25 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    WBEW_SLACK_API_URL: ${self:custom.slackApiUrl}
+    WBEW_SLACK_CHANNEL_NAME: ${self:custom.slackChannelName}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:*"
+      Resource: "arn:aws:dynamodb:${self:provider.region}:${self:custom.awsAccount}:table/${self:custom.tableName}"
 
 functions:
   result:
-    handler: handler.hello
+    handler: blog.result
     events:
       - schedule: cron(0 15 ? * SUN *)
   remind:
-    handler: handler.hello
+    handler: blog.remind
     events:
       - schedule: cron(0 06 ? * WED,FRI,SUN *)
   register:
-    handler: handler.hello
+    handler: blog.register
     events:
       - http:
           method: get
