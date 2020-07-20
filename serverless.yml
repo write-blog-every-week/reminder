@@ -6,9 +6,10 @@ service:
 
 custom:
   awsAccount: ${opt:awsAccount}
-  tableName: ${opt:tableName, write_blog_every_week}
+  tableName: ${opt:tableName, 'write_blog_every_week'}
   slackApiUrl: ${opt:slackApiUrl}
-  slackChannelName: ${opt:slackChannelName, general}
+  slackChannelName: ${opt:slackChannelName, 'general'}
+  slackToken: ${opt:slackToken}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -45,6 +46,8 @@ functions:
       - schedule: cron(0 06 ? * WED,FRI,SUN *)
   register:
     handler: blog.register
+    environment:
+      WBEW_SLACK_TOKEN: ${self:custom.slackToken}
     events:
       - http:
           method: get

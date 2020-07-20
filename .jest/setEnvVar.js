@@ -1,0 +1,1 @@
+process.env.WBEW_SLACK_TOKEN = 'rightToken';
