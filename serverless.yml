@@ -5,6 +5,7 @@ service:
 #org: your-org-name
 
 custom:
+  stage: ${opt:stage,develop}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -16,15 +17,26 @@ plugins:
 provider:
   name: aws
   runtime: nodejs12.x
+  region: ap-northeast-1
+  memorySize: 128
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
 
 functions:
-  hello:
+  result:
+    handler: handler.hello
+    events:
+      - schedule: cron(0 15 ? * SUN *)
+  remind:
+    handler: handler.hello
+    events:
+      - schedule: cron(0 06 ? * WED,FRI,SUN *)
+  register:
     handler: handler.hello
     events:
       - http:
           method: get
-          path: hello
+          path: register
+
