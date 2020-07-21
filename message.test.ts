@@ -1,5 +1,5 @@
 import { UserData } from "./data";
-import { makeReminderSendText, getAllClearMessage, getReminderReplaceMessageList, makeResultSendText } from "./message";
+import { makeReminderSendText, getAllClearMessage, getReminderReplaceMessageList, makeResultSendText, getCancelReplaceMessageList, getZeroCancelMessage } from "./message";
 
 test('all clear reminder message for 0 users', () => {
   const users: UserData[] = [];
@@ -50,4 +50,10 @@ test('result message', () => {
 <@userB>さん\t残り3記事
 ================
 `);
+});
+
+test('cancel user 0 message', () => {
+  const users: UserData[] = [];
+  expect(getCancelReplaceMessageList(users))
+      .toBe(getZeroCancelMessage());
 });

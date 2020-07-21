@@ -48,7 +48,14 @@ ${getCancelReplaceMessageList(users.filter(u => u.requiredCount > MAX_BLOG_QUOTA
 }
 
 export const getCancelReplaceMessageList = (users: UserData[]) => {
+  if (users.length === 0) {
+    return getZeroCancelMessage();
+  }
   return `残念ながら以下の方は退会となります :cry:
 ================
 ${getReminderReplaceMessageList(users)}================`;
+}
+
+export const getZeroCancelMessage = () => {
+  return '今週は退会対象者はいません！ :tada:';
 }
