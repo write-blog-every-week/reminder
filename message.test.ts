@@ -10,8 +10,8 @@ test('getReminderReplaceMessageList', () => {
   const userA: UserData = {
     userName: 'userA',
     requiredCount: 1,
-};
-const userB: UserData = {
+  };
+  const userB: UserData = {
     userName: 'userB',
     requiredCount: 2,
   };
