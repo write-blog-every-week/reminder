@@ -25,5 +25,9 @@ export const getAllClearMessage = () => {
 }
 
 export const getReminderReplaceMessageList = (users: UserData[]) => {
-  return users.toString();
+  let list = '';
+  users.forEach(user => {
+    list += `<@${user.userName}>さん\t残り${user.requiredCount}記事\n`;
+  });
+  return list;
 }
