@@ -8,6 +8,8 @@
     },
     "dependencies": {
         "axios": "^0.19.2",
+        "moment": "^2.27.0",
+        "rss-parser": "^3.8.0",
         "source-map-support": "^0.5.10"
     },
     "devDependencies": {
