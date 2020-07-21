@@ -11,10 +11,10 @@ export const register: APIGatewayProxyHandler = async (event, _context) => {
   return registerResult('ブログを登録しました。これからは妥協は許しませんよ。');
 }
 
-const registerResult = (message: string) => {
+const registerResult = (message: string | string[]) => {
   return {
     statusCode: 200,
-    body: message
+    body: message.toString()
   };
 }
 
