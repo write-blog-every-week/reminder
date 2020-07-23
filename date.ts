@@ -7,12 +7,7 @@ import * as moment from 'moment';
 export const getThisMonday = (nowDate: moment.Moment) => {
   let day = nowDate.get('day') - 1;
   if (day === -1) day = 6;
-  nowDate.subtract(day, 'day');
-  nowDate.set('hour', 0);
-  nowDate.set('minute', 0);
-  nowDate.set('second', 0);
-  nowDate.set('millisecond', 0);
-  return nowDate;
+  return subtractDays(nowDate, day);
 }
 
 /**
@@ -20,11 +15,18 @@ export const getThisMonday = (nowDate: moment.Moment) => {
  * @param nowDate
  */
 export const getLastWeekMonday = (nowDate: moment.Moment) => {
-  let day = 7;
-  nowDate.subtract(day, 'day');
-  nowDate.set('hour', 0);
-  nowDate.set('minute', 0);
-  nowDate.set('second', 0);
-  nowDate.set('millisecond', 0);
-  return nowDate;
+  return subtractDays(nowDate, 7);
+}
+
+const subtractDays = (date: moment.Moment, day: number) => {
+  date.subtract(day, 'day');
+  return resetTime(date);
+}
+
+const resetTime = (date: moment.Moment) => {
+  date.set('hour', 0);
+  date.set('minute', 0);
+  date.set('second', 0);
+  date.set('millisecond', 0);
+  return date;
 }
