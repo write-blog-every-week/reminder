@@ -1,12 +1,32 @@
 import * as moment from 'moment';
 
-export const getThisMonday = (nowDate: moment.Moment) => {
+/**
+ * 今週の月曜の日付を取得する
+ * @param nowDate
+ */
+export const getThisMonday = (nowDate = moment()) => {
   let day = nowDate.get('day') - 1;
   if (day === -1) day = 6;
-  nowDate.subtract(day, 'day');
-  nowDate.set('hour', 0);
-  nowDate.set('minute', 0);
-  nowDate.set('second', 0);
-  nowDate.set('millisecond', 0);
-  return nowDate;
+  return subtractDays(nowDate, day);
+}
+
+/**
+ * 1週間前の月曜日を取得する(ロジック的には月曜日固定ではないけど、lambdaが月曜日に実行されるからよしとする)
+ * @param nowDate
+ */
+export const getLastWeekMonday = (nowDate = moment()) => {
+  return subtractDays(nowDate, 7);
+}
+
+const subtractDays = (date: moment.Moment, day: number) => {
+  date.subtract(day, 'day');
+  return resetTime(date);
+}
+
+const resetTime = (date: moment.Moment) => {
+  date.set('hour', 0);
+  date.set('minute', 0);
+  date.set('second', 0);
+  date.set('millisecond', 0);
+  return date;
 }
