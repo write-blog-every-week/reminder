@@ -30,3 +30,15 @@ test('2 items required, returns pubDate of 3rd item', () => {
   };
   expect(getLatestFeedPubDate(output, 2).isSame(expected)).toBe(true);
 });
+
+test('2 items required, returns this Monday if pubDate of 3rd item is undefined', () => {
+  const monday = getThisMonday();
+  const output = {
+      items: [{
+          pubDate: '2020-07-23T15:00:01.000Z'
+      }, {
+          pubDate: '2020-07-22T15:00:01.000Z'
+      }, {}]
+  };
+  expect(getLatestFeedPubDate(output, 2).isSame(monday)).toBe(true);
+});
