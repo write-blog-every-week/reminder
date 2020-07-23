@@ -4,6 +4,9 @@ env:
   TZ: 'Asia/Tokyo'
 
 on:
+  push:
+    branches:
+      - feature/*
   pull_request:
     branches:
       - feature/*
