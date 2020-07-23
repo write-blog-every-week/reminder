@@ -20,5 +20,11 @@ export const getThisMonday = (nowDate: moment.Moment) => {
  * @param nowDate
  */
 export const getLastWeekMonday = (nowDate: moment.Moment) => {
+  let day = 7;
+  nowDate.subtract(day, 'day');
+  nowDate.set('hour', 0);
+  nowDate.set('minute', 0);
+  nowDate.set('second', 0);
+  nowDate.set('millisecond', 0);
   return nowDate;
 }
