@@ -15,5 +15,5 @@ test('parseParams right token', () => {
   expect(actual.result).toBe(true);
   expect(actual.text).toBe('parseParamsRightTokenTest');
   expect(actual.userId).toBe('userA');
-  expect(actual.userName).toBe('user1');
+  expect(actual.userName).toBe('user2');
 });
