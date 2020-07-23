@@ -6,7 +6,7 @@ env:
 on:
   pull_request:
     branches:
-      - feature/*
+      - master
 
 jobs:
   unit-test:
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: npm test
+      - name: execute npm test
         run: |
           npm i
           npm test
