@@ -1,5 +1,8 @@
 name: Npm Test
 
+env:
+  TZ: 'Asia/Tokyo'
+
 on:
   pull_request:
     branches:
