@@ -10,5 +10,5 @@ export const getLatestFeedPubDate = (output: Parser.Output, requiredCount: numbe
     // そもそも記事数が足りない場合は公開日を取得できないのでlatestは、必ず通知対象となる今週の月曜日と合わせる
     return getThisMonday(moment());
   }
-  return moment();
+  return moment(output.items[requiredCount].pubDate);
 }
