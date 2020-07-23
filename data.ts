@@ -1,4 +1,6 @@
-export type UserData = {
+export interface UserData {
+  userId: string;
   userName: string;
+  feedUrl: string;
   requiredCount: number;
 }
