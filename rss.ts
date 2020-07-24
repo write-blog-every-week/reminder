@@ -6,10 +6,11 @@ import { UserData, BlogCount } from './data';
 const parser = new Parser();
 
 const parse = async (feedUrlOrXml: string) => {
-  if (feedUrlOrXml.startsWith("http")) {
-    return await parser.parseURL(feedUrlOrXml);
+  if (!feedUrlOrXml.startsWith("http")) {
+    // for testing purpose
+    return await parser.parseString(feedUrlOrXml);
   }
-  return await parser.parseString(feedUrlOrXml);
+  return await parser.parseURL(feedUrlOrXml);
 }
 
 export const findTargetUserList = async (users: UserData[], targetMonday = getThisMonday()): Promise<BlogCount[]> => {
@@ -18,29 +19,34 @@ export const findTargetUserList = async (users: UserData[], targetMonday = getTh
     const output = await parse(user.feedUrl);
     result.push({
       userId: user.userId,
-      requiredCount: calcRequiredCount(user.requiredCount, output.items)
+      requiredCount: calcRequiredCount(user.requiredCount, targetMonday, output)
     });
-    console.log(output, targetMonday);
   };
   return result;
 }
 
-const calcRequiredCount = (requiredCount: number, items?: Parser.Item[]) => {
-  console.log(requiredCount, items);
-  return 0;
+const calcRequiredCount = (requiredCount: number, targetMonday: moment.Moment, output: Parser.Output) => {
+  let result = 0;
+  for (let i = 0; i < requiredCount; i++) {
+    const latestPublishedDate = getLatestFeedPubDate(output, i, targetMonday);
+    if (targetMonday.isSameOrAfter(latestPublishedDate)) {
+      result++;
+    }
+  }
+  return result;
 }
 
 /**
  * 最新フィードの公開日を取得する
  */
-export const getLatestFeedPubDate = (output: Parser.Output, requiredCount: number) => {
-  if (!output.items|| output.items.length < requiredCount + 1) {
+export const getLatestFeedPubDate = (output: Parser.Output, requiredCount: number, targetMonday = getThisMonday()) => {
+  if (!output.items || output.items.length < requiredCount + 1) {
     // そもそも記事数が足りない場合は公開日を取得できないのでlatestは、必ず通知対象となる今週の月曜日と合わせる
-    return getThisMonday();
+    return targetMonday;
   }
   const pubDate = output.items[requiredCount].pubDate;
   if (!pubDate) {
-    return getThisMonday();
+    return targetMonday;
   }
   return moment(pubDate);
 }
