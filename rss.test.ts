@@ -119,16 +119,16 @@ test('findTargetUserList: 1 more required returns 1', () => {
 
 
 test('findTargetUserList: 2 required, 2 blogs written, returns 0', () => {
-    const users = [{
+  const users = [{
+    userId: 'user3',
+    userName: 'user 3',
+    feedUrl: item_2,
+    requiredCount: 2
+  }];
+  return findTargetUserList(users, monday).then(data => {
+    expect(data).toEqual([{
       userId: 'user3',
-      userName: 'user 3',
-      feedUrl: item_2,
-      requiredCount: 2
-    }];
-    return findTargetUserList(users, monday).then(data => {
-      expect(data).toEqual([{
-        userId: 'user3',
-        requiredCount: 0
-      }]);
-    });
+      requiredCount: 0
+    }]);
   });
+});
