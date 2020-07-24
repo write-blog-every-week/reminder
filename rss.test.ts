@@ -63,6 +63,22 @@ const item_1 = `
   </entry>
 </feed>`;
 
+const item_2 = `
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<feed xml:lang="ja-JP" xmlns="http://www.w3.org/2005/Atom">
+  <id>item_2</id>
+  <entry>
+    <id>item_2_1</id>
+    <title>item 1 of 2</title>
+    <published>2020-07-15T18:10:11+09:00</published>
+  </entry>
+  <entry>
+    <id>item_2_2</id>
+    <title>item 2 of 2</title>
+    <published>2020-07-14T19:10:11+09:00</published>
+  </entry>
+</feed>`;
+
 test('findTargetUserList: 0 required returns 0', () => {
   const users = [{
     userId: 'user1',
@@ -100,3 +116,19 @@ test('findTargetUserList: 1 more required returns 1', () => {
     }]);
   });
 });
+
+
+test('findTargetUserList: 2 required, 2 blogs written, returns 0', () => {
+    const users = [{
+      userId: 'user3',
+      userName: 'user 3',
+      feedUrl: item_2,
+      requiredCount: 2
+    }];
+    return findTargetUserList(users, monday).then(data => {
+      expect(data).toEqual([{
+        userId: 'user3',
+        requiredCount: 0
+      }]);
+    });
+  });
