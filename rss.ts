@@ -13,13 +13,27 @@ const parse = async (feedUrlOrXml: string) => {
   return await parser.parseURL(feedUrlOrXml);
 }
 
+/**
+ * ブログを書いていないユーザーを取得する。
+ * 
+ * @param users
+ * @param targetMonday 
+ * @returns カウントがマイナスのユーザーはブログフィードを取得できなかったエラーデータ。
+ */
 export const findTargetUserList = async (users: UserData[], targetMonday = getThisMonday()): Promise<BlogCount[]> => {
   const result: BlogCount[] = [];
   for (let user of users) {
-    const output = await parse(user.feedUrl);
+    let requiredCount = -1;
+    try {
+      const output = await parse(user.feedUrl);
+      requiredCount = calcRequiredCount(user.requiredCount, targetMonday, output);
+    } catch (e) {
+      console.log(e);
+    }
+
     result.push({
       userId: user.userId,
-      requiredCount: calcRequiredCount(user.requiredCount, targetMonday, output)
+      requiredCount: requiredCount,
     });
   };
   return result;

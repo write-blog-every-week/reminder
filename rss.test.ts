@@ -79,6 +79,14 @@ const item_2 = `
   </entry>
 </feed>`;
 
+const item_broken = `
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<feed xml:lang="ja-JP" xmlns="http://www.w3.org/2005/Atom">
+  <id>item_2</id>
+  <entry>
+</feed>
+`
+
 test('findTargetUserList: 0 required returns 0', () => {
   const users = [{
     userId: 'user1',
@@ -131,3 +139,18 @@ test('findTargetUserList: 2 required, 2 blogs written, returns 0', () => {
     }]);
   });
 });
+
+test('findTargetUserList: broken data error handling', () => {
+  const users = [{
+    userId: 'userBroken',
+    userName: 'user broken',
+    feedUrl: item_broken,
+    requiredCount: 0,
+  }];
+  return findTargetUserList(users, monday).then(data => {
+    expect(data).toEqual([{
+      userId: 'userBroken',
+      requiredCount: -1
+    }]);
+  });
+})
