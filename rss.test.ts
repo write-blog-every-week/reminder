@@ -153,4 +153,27 @@ test('findTargetUserList: broken data error handling', () => {
       requiredCount: -1
     }]);
   });
-})
+});
+
+test('findTargetUserList: correct data and broken data handled together', () => {
+  const users = [{
+    userId: 'userBroken',
+    userName: 'user broken',
+    feedUrl: item_broken,
+    requiredCount: 0,
+  }, {
+    userId: 'user1',
+    userName: 'user 1',
+    feedUrl: item_1,
+    requiredCount: 2
+  }];
+  return findTargetUserList(users, monday).then(data => {
+    expect(data).toEqual([{
+      userId: 'userBroken',
+      requiredCount: -1
+    }, {
+      userId: 'user1',
+      requiredCount: 1
+    }]);
+  });
+});
