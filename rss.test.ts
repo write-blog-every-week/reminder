@@ -117,7 +117,6 @@ test('findTargetUserList: 1 more required returns 1', () => {
   });
 });
 
-
 test('findTargetUserList: 2 required, 2 blogs written, returns 0', () => {
   const users = [{
     userId: 'user3',
