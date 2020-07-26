@@ -8,11 +8,15 @@ test('all clear reminder message for 0 users', () => {
 
 test('getReminderReplaceMessageList', () => {
   const userA: UserData = {
+    userId: '001',
     userName: 'userA',
+    feedUrl: 'http://example.com',
     requiredCount: 1,
   };
   const userB: UserData = {
+    userId: '002',
     userName: 'userB',
+    feedUrl: 'http://example.com',
     requiredCount: 2,
   };
   const users = [ userA, userB ];
@@ -22,15 +26,21 @@ test('getReminderReplaceMessageList', () => {
 
 test('result message', () => {
   const userA: UserData = {
+    userId: '001',
     userName: 'userA',
+    feedUrl: 'http://example.com',
     requiredCount: 1,
   };
   const userB: UserData = {
+    userId: '003',
     userName: 'userB',
+    feedUrl: 'http://example.com',
     requiredCount: 3,
   };
   const userC: UserData = {
+    userId: '002',
     userName: 'userC',
+    feedUrl: 'http://example.com',
     requiredCount: 2,
   };
   const users: UserData[] = [ userA, userB, userC ];
