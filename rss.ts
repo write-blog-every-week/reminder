@@ -5,7 +5,7 @@ import { UserData, BlogCount } from './data';
 
 const parser = new Parser();
 
-const parse = async (feedUrlOrXml: string) => {
+export const parse = async (feedUrlOrXml: string) => {
   if (!feedUrlOrXml.startsWith("http")) {
     // for testing purpose
     return await parser.parseString(feedUrlOrXml);
