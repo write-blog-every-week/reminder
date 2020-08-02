@@ -1,8 +1,8 @@
-import { UserData } from "./data";
+import { BlogCount } from "./data";
 
 const MAX_BLOG_QUOTA = Number(process.env.WBEW_MAX_BLOG_QUOTA);
 
-export const makeReminderSendText = (users: UserData[]) => {
+export const makeReminderSendText = (users: BlogCount[]) => {
   switch (users.length) {
     case 0:
       return getAllClearMessage();
@@ -26,15 +26,15 @@ export const getAllClearMessage = () => {
 `;
 }
 
-export const getReminderReplaceMessageList = (users: UserData[]) => {
+export const getReminderReplaceMessageList = (users: BlogCount[]) => {
   let list = '';
   users.forEach(user => {
-    list += `<@${user.userName}>さん\t残り${user.requiredCount}記事\n`;
+    list += `<@${user.userId}>さん\t残り${user.requiredCount}記事\n`;
   });
   return list;
 }
 
-export const makeResultSendText = (users: UserData[]) => {
+export const makeResultSendText = (users: BlogCount[]) => {
   return `
 <!channel>
 1週間お疲れ様でした！
@@ -47,7 +47,7 @@ ${getCancelReplaceMessageList(users.filter(u => u.requiredCount > MAX_BLOG_QUOTA
 `;
 }
 
-export const getCancelReplaceMessageList = (users: UserData[]) => {
+export const getCancelReplaceMessageList = (users: BlogCount[]) => {
   if (users.length === 0) {
     return getZeroCancelMessage();
   }
