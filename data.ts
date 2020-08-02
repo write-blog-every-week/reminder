@@ -1,6 +1,11 @@
-export interface UserData {
+export interface BlogCount {
   userId: string;
-  userName: string;
-  feedUrl: string;
   requiredCount: number;
 }
+
+export interface BlogUrl {
+  userName: string;
+  feedUrl: string;
+}
+
+export type UserData = BlogCount & BlogUrl;

@@ -14,7 +14,7 @@ export const findMembers = async (): Promise<UserData[]> => {
 
     return <UserData[]>result.Items
   } catch (err) {
-    // todo エラー処理どうする？
+    console.log(err)
   }
 }
 
@@ -33,6 +33,6 @@ export const findMember = async (userId: number): Promise<UserData> => {
 
     return <UserData>result.Item
   } catch (err) {
-    // todo エラー処理どうする？
+    console.log(err)
   }
 }

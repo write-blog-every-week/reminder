@@ -1,22 +1,18 @@
-import { UserData } from "./data";
+import { BlogCount } from "./data";
 import { makeReminderSendText, getAllClearMessage, getReminderReplaceMessageList, makeResultSendText, getCancelReplaceMessageList, getZeroCancelMessage } from "./message";
 
 test('all clear reminder message for 0 users', () => {
-  const users: UserData[] = [];
+  const users: BlogCount[] = [];
   expect(makeReminderSendText(users)).toBe(getAllClearMessage());
 });
 
 test('getReminderReplaceMessageList', () => {
-  const userA: UserData = {
-    userId: '001',
-    userName: 'userA',
-    feedUrl: 'http://example.com',
+  const userA: BlogCount = {
+    userId: 'userA',
     requiredCount: 1,
   };
-  const userB: UserData = {
-    userId: '002',
-    userName: 'userB',
-    feedUrl: 'http://example.com',
+  const userB: BlogCount = {
+    userId: 'userB',
     requiredCount: 2,
   };
   const users = [ userA, userB ];
@@ -25,25 +21,19 @@ test('getReminderReplaceMessageList', () => {
 });
 
 test('result message', () => {
-  const userA: UserData = {
-    userId: '001',
-    userName: 'userA',
-    feedUrl: 'http://example.com',
+  const userA: BlogCount = {
+    userId: 'userA',
     requiredCount: 1,
   };
-  const userB: UserData = {
-    userId: '003',
-    userName: 'userB',
-    feedUrl: 'http://example.com',
+  const userB: BlogCount = {
+    userId: 'userB',
     requiredCount: 3,
   };
-  const userC: UserData = {
-    userId: '002',
-    userName: 'userC',
-    feedUrl: 'http://example.com',
+  const userC: BlogCount = {
+    userId: 'userC',
     requiredCount: 2,
   };
-  const users: UserData[] = [ userA, userB, userC ];
+  const users = [ userA, userB, userC ];
   expect(makeResultSendText(users))
       .toBe(`
 <!channel>
@@ -63,7 +53,7 @@ test('result message', () => {
 });
 
 test('cancel user 0 message', () => {
-  const users: UserData[] = [];
+  const users: BlogCount[] = [];
   expect(getCancelReplaceMessageList(users))
       .toBe(getZeroCancelMessage());
 });
