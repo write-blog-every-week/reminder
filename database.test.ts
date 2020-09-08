@@ -1,7 +1,8 @@
 import * as AWSMock from "aws-sdk-mock";
 import * as AWS from "aws-sdk";
 import { ScanInput } from "aws-sdk/clients/dynamodb";
-import {findMember, findMembers} from "./database";
+import {findMember, findMembers, refreshCount, createUser, deleteUser} from "./database";
+import { UserData } from "./data";
 
 
 test('findMembers', async () => {
@@ -41,6 +42,45 @@ test('findMember', async () => {
         }});
     })
 
-    const result = await findMember(1)
+    const result = await findMember('001')
     expect(result.userId).toBe('001');
 })
+
+test('refreshCount', async () => {
+    AWSMock.setSDKInstance(AWS);
+    // @ts-ignore
+    AWSMock.mock('DynamoDB.DocumentClient', 'update', (params: GetItemInput, callback: Function) => {
+        callback(null, true)
+    })
+
+    const result = await refreshCount('001', 1)
+    expect(result).toBe(true);
+})
+
+test('createUser', async () => {
+    AWSMock.setSDKInstance(AWS);
+    // @ts-ignore
+    AWSMock.mock('DynamoDB.DocumentClient', 'put', (params: GetItemInput, callback: Function) => {
+        callback(null, true)
+    })
+
+    const result = await createUser(<UserData>{
+        userId: '002',
+        userName: 'bbb',
+        feedUrl: 'http://example.com',
+        requiredCount: 2,
+    })
+    expect(result).toBe(true);
+})
+
+test('deleteUser', async () => {
+    AWSMock.setSDKInstance(AWS);
+    // @ts-ignore
+    AWSMock.mock('DynamoDB.DocumentClient', 'delete', (params: GetItemInput, callback: Function) => {
+        callback(null, true)
+    })
+
+    const result = await deleteUser('001')
+    expect(result).toBe(true);
+})
+
