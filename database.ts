@@ -1,4 +1,4 @@
-import { UserData } from "./data";
+import { BlogCount, UserData } from "./data";
 import { AttributeValueUpdate, AttributeUpdates, DocumentClient } from 'aws-sdk/clients/dynamodb';
 
 /**
@@ -12,6 +12,8 @@ export const findMembers = async (dynamo: DocumentClient): Promise<UserData[]> =
     }).promise();
 
     return <UserData[]>result.Items
+
+    // return <UserData[]>result.Items
   } catch (err) {
     console.log(err)
   }
@@ -37,19 +39,20 @@ export const findMember = async (userId: string, dynamo: DocumentClient): Promis
 
 /**
  * ブログの必要記事数をリフレッシュする
- * @param userId 
- * @param count 
+ * @param users 
  * @param dynamo 
  */
-export const refreshCount = async (userId: string, count: number, dynamo: DocumentClient): Promise<Boolean> => {
+export const userRefreshCount = async (users: BlogCount[], dynamo: DocumentClient): Promise<Boolean> => {
   try {
-    await dynamo.update({
-      TableName: process.env.TABLE_NAME,
-      Key: { user_id: userId },
-      AttributeUpdates: <AttributeUpdates>{
-        require_count: <AttributeValueUpdate>{ Value: count }
-      }
-    }).promise();
+    users.map(async user => {
+      await dynamo.update({
+        TableName: process.env.TABLE_NAME,
+        Key: { user_id: user.userId },
+        AttributeUpdates: <AttributeUpdates>{
+          require_count: <AttributeValueUpdate>{ Value: user.requiredCount }
+        }
+      }).promise();
+    })
 
     return true
   } catch (err) {
