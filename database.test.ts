@@ -1,8 +1,8 @@
 import * as AWSMock from "aws-sdk-mock";
 import * as AWS from "aws-sdk";
 import { ScanInput } from "aws-sdk/clients/dynamodb";
-import {findMember, findMembers, refreshCount, createUser} from "./database";
-import { UserData } from "./data";
+import {findMember, findMembers, userRefreshCount, createUser} from "./database";
+import { BlogCount, UserData } from "./data";
 
 
 test('findMembers', async () => {
@@ -46,14 +46,17 @@ test('findMember', async () => {
     expect(result.userId).toBe('001');
 })
 
-test('refreshCount', async () => {
+test('userRefreshCount', async () => {
     AWSMock.setSDKInstance(AWS);
     // @ts-ignore
     AWSMock.mock('DynamoDB.DocumentClient', 'update', (params: GetItemInput, callback: Function) => {
         callback(null, true)
     })
 
-    const result = await refreshCount('001', 1, new AWS.DynamoDB.DocumentClient())
+    const result = await userRefreshCount(<BlogCount[]>[
+        { userId: '1', requiredCount: 1 },
+        { userId: '2', requiredCount: 1 }
+    ], new AWS.DynamoDB.DocumentClient())
     expect(result).toBe(true);
 })
 
